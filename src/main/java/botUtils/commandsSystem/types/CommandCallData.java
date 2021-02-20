@@ -254,6 +254,15 @@ public class CommandCallData {
      *
      * @param message the message to send
      */
+    public void message(Number message) {
+        message(message.toString());
+    }
+
+    /**
+     * This is a convenience method to send a message to the channel given in {@link #getChannel()}.
+     *
+     * @param message the message to send
+     */
     public void message(MessageEmbed message) {
         channel.sendMessage(message).queue();
     }
@@ -294,6 +303,17 @@ public class CommandCallData {
      */
     public void messageTemp(CharSequence message) {
         MessageUtils.sendTemp(channel, message, TempMsgConfig.DEFAULT_SPEED);
+    }
+
+    /**
+     * This is a convenience method to send a temporary message to the channel given in {@link #getChannel()}. It uses
+     * {@link MessageUtils#sendTemp(MessageChannel, CharSequence, TempMsgConfig)} with {@link
+     * TempMsgConfig#DEFAULT_SPEED} to control how long the message persists.
+     *
+     * @param message the message to send
+     */
+    public void messageTemp(Number message) {
+        messageTemp(message.toString());
     }
 
     /**

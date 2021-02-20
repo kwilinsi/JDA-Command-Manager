@@ -3,7 +3,7 @@ package botUtils.commandsSystem.types.function;
 import botUtils.commandsSystem.json.JsonParser;
 import botUtils.commandsSystem.types.Command;
 import botUtils.commandsSystem.types.CommandCallData;
-import botUtils.exceptions.CustomFunctionException;
+import botUtils.exceptions.FuncException;
 import botUtils.exceptions.InvalidMethodException;
 import botUtils.exceptions.JsonParseException;
 import botUtils.exceptions.SyntaxException;
@@ -77,8 +77,8 @@ public class Function extends Command {
             // Figure out what kind of exception that was.
             Exception error = (Exception) e.getCause();
 
-            if (error instanceof CustomFunctionException)
-                sendError(data.getChannel(), ((CustomFunctionException) error).getError());
+            if (error instanceof FuncException)
+                sendError(data.getChannel(), ((FuncException) error).getError());
             else
                 sendError(data.getChannel(), error);
 
