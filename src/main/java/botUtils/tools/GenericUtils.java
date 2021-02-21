@@ -22,14 +22,16 @@ public class GenericUtils {
      * @return all the strings from the input list merged in a comma delimited list
      */
     @NotNull
-    public static String mergeList(List<String> list, String conjunction) {
+    public static String mergeList(List<String> list, @Nullable String conjunction) {
         if (list == null || list.size() == 0)
             return "";
+        else if (list.size() == 1)
+            return list.get(0);
 
         StringBuilder merge = new StringBuilder();
         for (int i = 0; i < list.size(); i++)
             merge
-                    .append(i > 0 && list.size() > 2 ? ", " : "")
+                    .append(i > 0 ? list.size() > 2 ? ", " : " " : "")
                     .append(i + 1 == list.size() && conjunction != null ? conjunction + " " : "")
                     .append(list.get(i));
 
@@ -74,7 +76,7 @@ public class GenericUtils {
      * @param input the input
      * @return the output with modified case
      */
-    public static @Nullable String capitalizeString(@Nullable String input) {
+    public static String capitalizeString(@Nullable String input) {
         if (input == null || input.length() == 0)
             return input;
 

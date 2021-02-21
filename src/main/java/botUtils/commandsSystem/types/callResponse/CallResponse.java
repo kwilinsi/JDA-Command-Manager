@@ -23,6 +23,8 @@ public class CallResponse extends Command {
     private final String defaultResponseKey;
 
     //                            |
+    //                            |
+    //                            |
     // TODO implement this stuff \|/
     private final String[] replaceKeys = {
             "PREFIX"};
@@ -43,8 +45,8 @@ public class CallResponse extends Command {
 
     /**
      * This represents the class that should be used for storing information about a specific triggering of a {@link
-     * CallResponse} by a user in Discord. See {@link Command#getCallDataClass()} for more detailed documentation
-     * about what this means.
+     * CallResponse} by a user in Discord. See {@link Command#getCallDataClass()} for more detailed documentation about
+     * what this means.
      *
      * @return the class for storing information about a {@link CallResponse} call and execution
      */
@@ -54,12 +56,16 @@ public class CallResponse extends Command {
     }
 
     public void process(@NotNull CommandCallData data, Method method) {
+
+        if (checkInfoRequest(getInfo(), data))
+            return;
+
         String key;
 
-        if (data.getMsgArgs().length == 1)
+        if (data.getMsgArgs().length == 0)
             key = defaultResponseKey;
         else
-            key = mergeArgs(data.getMsgArgs(), 1);
+            key = mergeArgs(data.getMsgArgs(), 0);
 
         for (Response response : responses)
             if (response.matches(key)) {
@@ -68,8 +74,7 @@ public class CallResponse extends Command {
             }
 
         // If no response was sent it means a matching key wasn't found
-        sendError(
-                data.getChannel(),
+        sendError(data.getChannel(),
                 "Error loading response (unknown term). Try `" + getHelpString() + "` for more information.");
     }
 

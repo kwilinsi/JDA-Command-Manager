@@ -147,6 +147,14 @@ public abstract class Command {
     }
 
     /**
+     * Retrieves the name of the command with the first letter capitalized and the rest of the letters lowercase.
+     * @return the capitalized name of the command
+     */
+    public @NotNull String getNameCapital() {
+        return GenericUtils.capitalizeString(name);
+    }
+
+    /**
      * Get the name of the command in all lowercase. Use getName() to preserve the case in the Json. This is mandatory
      * argument in the Json and will not be null.
      *
@@ -372,7 +380,7 @@ public abstract class Command {
      */
     protected @NotNull EmbedBuilder generateInfo() {
         EmbedBuilder e = MessageUtils.makeEmbedBuilder(
-                getName() + " Command Info",
+                "Command Info: " + getNameCapital(),
                 "",
                 manager.getConfig().getCommandInfoColor(),
                 EmbedField.of("Description", getDescription()),

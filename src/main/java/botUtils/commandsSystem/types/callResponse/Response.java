@@ -54,7 +54,7 @@ public class Response {
      * set of keys from the json, these are compared to the input key and if any of them match it returns true.
      * If a set of keys was not provided in the json then this method will always return true.
      *
-     * @param inputKey the key to check against this Response object
+     * @param inputKey the key to check against this Response object (case insensitive)
      * @return true if this Response object has a key that matches the inputKey, or it doesn't have any keys at all
      */
     public boolean matches(String inputKey) {

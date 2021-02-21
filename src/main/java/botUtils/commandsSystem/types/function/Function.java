@@ -218,7 +218,7 @@ public class Function extends Command {
         String syntaxDesc = s.substring(1);
 
         return MessageUtils.makeEmbedBuilder(
-                getName() + " Info",
+                "Command Info: " + getNameCapital(),
                 getLink(),
                 "",
                 manager.getConfig().getCommandInfoColor(),
