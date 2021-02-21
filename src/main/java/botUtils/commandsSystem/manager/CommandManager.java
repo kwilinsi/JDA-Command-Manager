@@ -2,6 +2,7 @@ package botUtils.commandsSystem.manager;
 
 import botUtils.commandsSystem.json.JsonParser;
 import botUtils.commandsSystem.types.Command;
+import botUtils.commandsSystem.types.CommandCallData;
 import botUtils.commandsSystem.types.function.Function;
 import botUtils.exceptions.JsonParseException;
 import botUtils.exceptions.ManagerBuildException;
@@ -109,6 +110,12 @@ public class CommandManager {
     private @NotNull ManagerConfig workingConfig = ManagerConfig.of();
 
     /**
+     * This is the list of all the Json files found in the {@link #folder} given to this {@link CommandManager}.
+     * It is set when calling {@link #setJsonFiles(File)} in {@link #rawBuild()}.
+     */
+    private @NotNull final ArrayList<File> jsonFiles = new ArrayList<>();
+
+    /**
      * This is a saved non-modifiable version of the {@link ManagerConfig} used by this {@link CommandManager}. It
      * should never be modified with setter methods, and should only be used for the purpose of retrieving existing
      * settings. This configuration instance is only modified with {@link #build()} is called. If you would like to make
@@ -138,7 +145,6 @@ public class CommandManager {
      */
     private CommandManager(@NotNull JDA jda, @NotNull File directory, @NotNull String name) {
         Checks.fileIsDirectory(directory);
-        // TODO look through the folder with the json files recursively, to include sub folders
         this.jda = jda;
         this.folder = directory;
         this.name = name;
@@ -391,10 +397,54 @@ public class CommandManager {
         commandCodeMethods.clear();
         for (Class<?> c : commandCodeClasses)
             for (Method m : c.getDeclaredMethods())
-                if (commandCodeMethods.containsKey(m.getName()))
-                    throw new DuplicateMethodsException("More than one command method with same name: " + m.getName());
-                else
-                    commandCodeMethods.put(m.getName().toLowerCase(Locale.ROOT), m);
+                if (isMethodStatic(m) && isMethodParamCorrect(m))
+                    if (commandCodeMethods.containsKey(m.getName()))
+                        throw new DuplicateMethodsException(
+                                "More than one command method with same name: " + m.getName());
+                    else
+                        commandCodeMethods.put(m.getName().toLowerCase(Locale.ROOT), m);
+    }
+
+    /**
+     * Checks to see if the given object is both public and static, and thus accessible by any object.
+     *
+     * @param method the method to check
+     * @return true if it is public and static; false otherwise
+     */
+    private boolean isMethodStatic(@NotNull Method method) {
+        try {
+            return method.canAccess(null);
+        } catch (IllegalArgumentException ignore) {
+            return false;
+        }
+    }
+
+    /**
+     * Checks to see if the given method takes a single parameter, that being a {@link CommandCallData} or subclass
+     * thereof.
+     *
+     * @param method the method to check
+     * @return true if it takes the proper argument; false otherwise
+     */
+    private boolean isMethodParamCorrect(@NotNull Method method) {
+        Class<?>[] params = method.getParameterTypes();
+        return params.length == 1 && CommandCallData.class.isAssignableFrom(params[0]);
+    }
+
+    /**
+     * Grabs all the Json files in the given root folder and adds them to {@link #jsonFiles}. This method runs
+     * recursively on all sub folders as well.
+     *
+     * @param root the root folder to begin searching from
+     */
+    private void setJsonFiles(@NotNull File root) {
+        File[] files = root.listFiles();
+
+        for (File file : files)
+            if (file.isDirectory())
+                setJsonFiles(file);
+            else if (Checks.fileIsJsonBool(file))
+                jsonFiles.add(file);
     }
 
     /**
@@ -438,17 +488,24 @@ public class CommandManager {
         // TODO check to see if there are duplicate aliases or typo aliases across all commands
         builtConfig = getConfig().clone();
 
+        // Reset the list of command list messages
         commandListMessageCache.clear();
-        commands.clear();
         listEligibleCommands = 0;
+
+        // Get a list of all the Methods that are eligible to be called by Commands
         setCodeMethods();
+
+        // Clear the Commands and get a list of all the command Json files in the folder for this manager
+        commands.clear();
+        jsonFiles.clear();
+        setJsonFiles(folder);
 
         ArrayList<String> errors = new ArrayList<>();
         FileReader r = null;
         Gson gson = new Gson();
 
         // Iterate through each of the Json files
-        for (File f : folder.listFiles())
+        for (File f : jsonFiles)
 
             // Try to parse it
             try {

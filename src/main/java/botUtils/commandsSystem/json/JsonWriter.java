@@ -24,7 +24,7 @@ public class JsonWriter {
      */
     public static void writeJson(@NotNull JsonElement json, @NotNull File file)
             throws IOException {
-        Checks.fileIsJSON(file);
+        Checks.fileIsJson(file);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         new GsonBuilder().setPrettyPrinting().create().toJson(json, writer);

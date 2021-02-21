@@ -6,7 +6,9 @@ import net.dv8tion.jda.api.entities.MessageReaction;
 import net.dv8tion.jda.api.entities.User;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -71,7 +73,7 @@ public class JDAUtils {
      * from the same module as the resource. The file parameter is the name of the file with the token.
      * <p><br>
      * The most common usage of this method is
-     * <p>{@code JDAUtils.getBotTokenFromResource(Main, "/bot.token");}
+     * <p>{@code JDAUtils.getBotTokenFromResource(Main.class, "/bot.token");}
      * <p>Substitute {@code Main} for the name of the class that is declaring the {@link JDABuilder} and requesting the
      * token.
      * <p><br>
@@ -82,13 +84,32 @@ public class JDAUtils {
      * @param file the name of the file in the resources folder. This should always start with a /
      * @param <T>  type parameter
      * @return the token from the specified resource file
-     * @throws IOException          if there's an error reading the file
-     * @throws NullPointerException if there was no resource with the given name. Make sure to start the resource
-     *                              reference with a /
+     * @throws IOException           if there's an error reading the file
+     * @throws FileNotFoundException if there is no resource with the given name. Make sure to start the resource
+     *                               reference with a /
      */
     public static <T> @NotNull String getBotTokenFromResource(@NotNull Class<T> c, @NotNull String file)
             throws IOException {
+        URL r = c.getResource(file);
+        if (r == null)
+            throw new FileNotFoundException("Unable to find a resource called '" + file + "'." +
+                    (file.startsWith("/") ? "" : " Don't forget to include a / before the file name."));
         return getBotToken(Path.of(c.getResource(file).getPath().substring(1)));
+    }
+
+    /**
+     * Convenience method to call {@link #getBotTokenFromResource(Class, String)}. The class is obtained from the object
+     * via {@link Object#getClass()}.
+     *
+     * @param o    the object to get the class from
+     * @param file the name of the file in the resources folder. This should always start with a /
+     * @return the token from the specified resource file
+     * @throws IOException           if there's an error reading the file
+     * @throws FileNotFoundException – if there is no resource with the given name. Make sure to start the resource
+     *                               reference with a /
+     */
+    public static @NotNull String getBotTokenFromResource(@NotNull Object o, @NotNull String file) throws IOException {
+        return getBotTokenFromResource(o.getClass(), file);
     }
 
     /**

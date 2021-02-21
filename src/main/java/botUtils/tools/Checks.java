@@ -107,10 +107,26 @@ public class Checks {
      * @throws NullPointerException     if the file is null
      * @throws IllegalArgumentException if the file is not JSON
      */
-    public static void fileIsJSON(File file) {
+    public static void fileIsJson(File file) {
         fileNotDirectory(file);
         if (!file.getName().toLowerCase(Locale.ROOT).endsWith(".json"))
             throw new IllegalArgumentException("'" + file.getName() + "' must be of type JSON.");
+    }
+
+    /**
+     * Convenience method to call {@link #fileIsJson(File)} on the given file, but with a boolean output instead of
+     * throwing errors on a non Json file. A try catch is used, and if any exception is thrown false is returned.
+     *
+     * @param file the file to test
+     * @return true if the file is a Json file; false otherwise
+     */
+    public static boolean fileIsJsonBool(File file) {
+        try {
+            fileIsJson(file);
+            return true;
+        } catch (Exception ignore) {
+            return false;
+        }
     }
 
     /**
@@ -217,8 +233,8 @@ public class Checks {
 
     /**
      * Confirms that the given input (which was presumably just retrieved from a {@link JsonObject} through a {@link
-     * JsonParser} method) is not null. If it's not null, it is immediately returned as
-     * though nothing happened. If it is null, an error is thrown.
+     * JsonParser} method) is not null. If it's not null, it is immediately returned as though nothing happened. If it
+     * is null, an error is thrown.
      *
      * @param arg the input argument
      * @param key the name of the argument in the Json
@@ -311,11 +327,11 @@ public class Checks {
      * also return true. But if array1 was {@code "a", "b", "c", "d"} and array2 was {@code "b", "a", "c"} it would
      * return false.
      * <p><br>
-     * Sometimes this method is desirable when comparing full strings, such as with {@link Command#checkForMatch(String[])}.
-     * Admittedly it is slower to split the strings being compared with regex and then compare them with this method,
-     * but the advantage has to do with users requesting commands in Discord. If they do abnormal things like separating
-     * arguments of commands with double spaces or line breaks, this method will still result in a match, because it
-     * compares each element of the strings separated by whitespace.
+     * Sometimes this method is desirable when comparing full strings, such as with {@link
+     * Command#checkForMatch(String[])}. Admittedly it is slower to split the strings being compared with regex and then
+     * compare them with this method, but the advantage has to do with users requesting commands in Discord. If they do
+     * abnormal things like separating arguments of commands with double spaces or line breaks, this method will still
+     * result in a match, because it compares each element of the strings separated by whitespace.
      * <p><br>
      * Note that if either array is null, false is returned. (However null items within the array are perfectly fine).
      * Additionally, if array2 is longer than array1 it will always return false. The elements in the array are compared
