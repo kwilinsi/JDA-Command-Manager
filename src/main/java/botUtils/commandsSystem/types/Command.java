@@ -132,8 +132,8 @@ public abstract class Command {
             this.shortDescription = JsonParser.getString(json, "shortDescription", "");
 
         // All Command aliases are optional. typoAliases don't show up in the command help embed.
-        this.aliases = JsonParser.getStringArray(json, "aliases");
-        this.typoAliases = JsonParser.getStringArray(json, "typoAliases");
+        this.aliases = JsonParser.getStringArrayNoError(json, "aliases");
+        this.typoAliases = JsonParser.getStringArrayNoError(json, "typoAliases");
     }
 
     /**

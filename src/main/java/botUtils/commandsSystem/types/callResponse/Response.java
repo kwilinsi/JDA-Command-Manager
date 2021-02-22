@@ -12,8 +12,11 @@ public class Response {
     private final MessageBuilder message;
 
     private Response(JsonObject json) throws JsonParseException {
-        keys = JsonParser.getStringArray(json, "keys");
         String type = JsonParser.getString(json, "type");
+
+        // Keys are optional. If none are given, a single empty key is assumed
+        String[] k = JsonParser.getStringArrayNoError(json, "keys");
+        keys = k.length == 0 ? new String[]{""} : k;
 
         switch (type) {
             // TODO implement the replacement strings doing substitutions like ?PREFIX? becoming %
