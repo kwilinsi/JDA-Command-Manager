@@ -110,10 +110,11 @@ public class CommandManager {
     private @NotNull ManagerConfig workingConfig = ManagerConfig.of();
 
     /**
-     * This is the list of all the Json files found in the {@link #folder} given to this {@link CommandManager}.
-     * It is set when calling {@link #setJsonFiles(File)} in {@link #rawBuild()}.
+     * This is the list of all the Json files found in the {@link #folder} given to this {@link CommandManager}. It is
+     * set when calling {@link #setJsonFiles(File)} in {@link #rawBuild()}.
      */
-    private @NotNull final ArrayList<File> jsonFiles = new ArrayList<>();
+    private @NotNull
+    final ArrayList<File> jsonFiles = new ArrayList<>();
 
     /**
      * This is a saved non-modifiable version of the {@link ManagerConfig} used by this {@link CommandManager}. It
@@ -657,14 +658,11 @@ public class CommandManager {
         int i = 0;
         ArrayList<Command> list = new ArrayList<>();
 
-        while (i < listEligibleCommands)
-            if (list.size() >= pageLen)
-                break;
-            else if (commands.get(i).doIncludeInCommandsList()) {
-                if (i >= first)
-                    list.add(commands.get(i));
-                i++;
-            }
+        while (i < commands.size() && list.size() >= pageLen) {
+            if (commands.get(i).doIncludeInCommandsList() && i >= first)
+                list.add(commands.get(i));
+            i++;
+        }
 
         return list;
     }
