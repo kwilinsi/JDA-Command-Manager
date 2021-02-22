@@ -658,9 +658,11 @@ public class CommandManager {
         int i = 0;
         ArrayList<Command> list = new ArrayList<>();
 
-        while (i < commands.size() && list.size() >= pageLen) {
-            if (commands.get(i).doIncludeInCommandsList() && i >= first)
+        while (i < commands.size()) {
+            if (i >= first && commands.get(i).doIncludeInCommandsList())
                 list.add(commands.get(i));
+            if (list.size() == pageLen)
+                break;
             i++;
         }
 
