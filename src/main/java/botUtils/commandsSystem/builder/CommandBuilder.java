@@ -25,8 +25,8 @@ public abstract class CommandBuilder implements Builder {
     /**
      * Create a CommandBuilder with the required arguments for all Commands: a name, a description, and a type. Call the
      * other configuration methods to add more key-value pairs to the command JSON, and then use the {@link
-     * #build(File)} method to write all the variables to a JSON file that can be read by a {@link
-     * CommandManager} later.
+     * #build(File)} method to write all the variables to a JSON file that can be read by a {@link CommandManager}
+     * later.
      * <p><br>
      * Beware that this does not add a {@link #shortDescription}. It is strongly suggested to set one via {@link
      * #setShortDescription(String)}, even if it's just an empty string, because otherwise the user will see "<i>{@code
@@ -45,8 +45,7 @@ public abstract class CommandBuilder implements Builder {
     }
 
     /**
-     * Sets a short description for the command that shows up in the commands list for the {@link
-     * CommandManager}.
+     * Sets a short description for the command that shows up in the commands list for the {@link CommandManager}.
      * <p>
      * Default state: empty string with no information. It is strongly recommended to set a shortDescription.
      *
@@ -133,11 +132,11 @@ public abstract class CommandBuilder implements Builder {
     }
 
     /**
-     * Converts all the instance variables into key-value pairs in the JSONObject. Subclasses of {@link CommandBuilder}
-     * should override this method to add new instance variables should still call this method to add the basic instance
-     * variables first.
+     * Converts all the instance variables into key-value pairs in the {@link JsonObject}. Subclasses of {@link
+     * CommandBuilder} should override this method to add new instance variables should still call this method to add
+     * the basic instance variables first.
      *
-     * @return the completed JSONObject with all the instance variables added
+     * @return the completed {@link JsonObject} with all the instance variables added
      */
     public @NotNull JsonObject getJson() throws ClassNotFoundException {
         return JsonBuilder.buildJsonObject(JsonMap.of()

@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -63,7 +64,7 @@ public class JsonParser {
      * @return the identified value in the json (or defaultValue if key was missing)
      * @throws JsonParseException if the key was present but the matching value is the wrong data type
      */
-    public static String getString(@NotNull JsonObject json, @NotNull String key, String defaultValue)
+    public static String getString(@NotNull JsonObject json, @NotNull String key, @Nullable String defaultValue)
             throws JsonParseException {
         try {
             return json.has(key) ? json.get(key).getAsString() : defaultValue;

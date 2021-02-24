@@ -26,11 +26,25 @@ import java.util.List;
 public class Function extends Command {
     private final Argument[] arguments;
     private final Syntax[] syntaxes;
+    /**
+     * This is the name of the {@link Method} with the code to execute for this {@link Function}.
+     */
+    private final String methodName;
 
     public Function(@NotNull JsonObject json, @NotNull CommandManager manager) throws JsonParseException {
         super(json, manager);
         this.arguments = Argument.ofArray(JsonParser.getJsonObjectArray(json, "arguments"));
+        this.methodName = JsonParser.getString(json, "method", getName());
         syntaxes = Syntax.ofArray(JsonParser.getJsonArrayArray(json, "syntax"), this);
+    }
+
+    /**
+     * Retrieves the name of the method that should be executed when this {@link Function} is called in Discord.
+     *
+     * @return the {@link #methodName}
+     */
+    public String getMethodName() {
+        return methodName;
     }
 
     /**
@@ -82,6 +96,12 @@ public class Function extends Command {
                 sendError(data.getChannel(), ((FuncException) error).getError());
             else
                 sendError(data.getChannel(), error);
+
+        } catch (NullPointerException ignore) {
+            // If the method is null it's probably because the class with it wasn't passed to the command manager
+            sendError(data.getChannel(), ErrorBuilder.of("Failed to process the **" + getName() + "** function. " +
+                    "Unable to locate and execute the **" + getMethodName() + "** method. Ensure that the class " +
+                    "with the specified method was passed to the command manager."));
 
         } catch (Exception e) {
             // Unknown/unanticipated exceptions are also printed to the console
