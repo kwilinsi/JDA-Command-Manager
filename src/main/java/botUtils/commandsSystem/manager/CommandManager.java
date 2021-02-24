@@ -221,6 +221,16 @@ public class CommandManager {
     }
 
     /**
+     * Returns the text that is placed in the title of the {@link Command} list for this {@link CommandManager}.
+     * It is based on the {@link #name} of the manager and is always in the form:
+     * <p>{@code "[name] Command List"}
+     * @return the title of the command list
+     */
+    public @NotNull String getCommandListTitle() {
+        return name + " Command List";
+    }
+
+    /**
      * Returns the {@link #jda} of this {@link CommandManager}.
      *
      * @return the bot jda
@@ -697,7 +707,7 @@ public class CommandManager {
 
         if (fields.length == 0)
             return MessageUtils.makeEmbedBuilder(
-                    name + " Command List",
+                    getCommandListTitle(),
                     "",
                     "There are no commands to list.",
                     builtConfig.getCommandListColor(),
@@ -706,7 +716,7 @@ public class CommandManager {
                     fields);
         else
             return MessageUtils.makeEmbedBuilder(
-                    name + " Command List",
+                    getCommandListTitle(),
                     "",
                     "This is a list of commands I recognize." + (totalCommandListPages > 1 ?
                             " Tap the arrows to switch pages and see more commands." : "") +

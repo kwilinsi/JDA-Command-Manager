@@ -247,9 +247,16 @@ public class CommandRunner {
         // Since the fast detection with the cache didn't work, try the slow method. Check to see if the message
         // was sent by the bot and is a command list for this manager
         Message message = reaction.getChannel().retrieveMessageById(reaction.getMessageIdLong()).complete();
+
         try {
-            assert message.getAuthor().getIdLong() == manager.getJda().getSelfUser().getIdLong();
-            assert Objects.equals(message.getEmbeds().get(0).getTitle(), manager.getName() + " Command List");
+            // Confirm that the message was sent by the bot
+            if (message.getAuthor().getIdLong() != manager.getJda().getSelfUser().getIdLong())
+                return false;
+
+            // Confirm that it has an embed and the title of the embed uses the name of the CommandManager
+            if(!manager.getCommandListTitle().equals(message.getEmbeds().get(0).getTitle()))
+                return false;
+
             updateCommandList(manager, message, user, reaction, !isPrivateMessage, nextPage);
             return true;
         } catch (Exception ignore) {
