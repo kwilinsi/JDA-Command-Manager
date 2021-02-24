@@ -69,8 +69,9 @@ public class Function extends Command {
             // Catches SyntaxExceptions and ArgumentExceptions, sending the user the proper syntax in the error
             sendSyntaxError(e.getMessage(), data.getChannel(), e.getSyntax());
 
-        } catch (InvalidMethodException e) {
-            sendError(data.getChannel(), e.getMessage());
+        } catch (InvalidMethodException | IllegalArgumentException e) {
+            // Known errors with class names good enough for error embed titles
+            sendError(data.getChannel(), ErrorBuilder.of(e));
 
         } catch (InvocationTargetException e) {
             // An InvocationTargetException encases another exception that was thrown while invoking a method.
