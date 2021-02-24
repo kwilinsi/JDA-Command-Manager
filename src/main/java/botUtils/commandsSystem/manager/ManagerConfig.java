@@ -254,13 +254,38 @@ public class ManagerConfig implements Cloneable {
     private String rightArrowEmoji = Emojis.ARROW_FORWARD;
 
     /**
-     * Controls whether the {@link CommandManager} should respond to {@link JDA} events fired because of other
-     * bots. Events from this bot will always be ignored, but events from other bots are controlled via this
-     * setting.
+     * Controls whether the {@link CommandManager} should respond to {@link JDA} events fired because of other bots.
+     * Events from this bot will always be ignored, but events from other bots are controlled via this setting.
      * <p><br>
      * <b>Default Value: <u>false</u></b>
      */
     private boolean allowBotEvents = false;
+
+    /**
+     * This is the text that goes in the title of an {@link EmbedBuilder} listening the commands for a {@link
+     * CommandManager}. The typical format for this title is <b><i>[command-manager-name]</i> Command List</b>.
+     * <p><br>
+     * For example, you might give the {@link CommandManager} a name of "{@code Admin}". Then, when a user requests to
+     * see a list of all the commands (usually by typing "{@code commands}" in Discord), they will be sent an {@link
+     * EmbedBuilder} with the list. It will be titled "<b>Admin Command List</b>".
+     * <p><br>
+     * The title of the embed will <i>always</i> start with the name of the {@link CommandManager}, controllable only
+     * during instantiation. This variable merely controls the text that comes <i>after</i> the manager name. So if you
+     * don't like the "{@code Command List}" text that comes after the name of the manager, change this variable.
+     * <p><br>
+     * <b>Default Value: <u>{@value}</u></b>
+     */
+    private String commandListTitle = "Command List";
+
+    /**
+     * Similar to {@link #commandListTitle}, this also controls text that appears in the command list for the {@link
+     * CommandManager}. However, this string holds the {@link EmbedBuilder}'s <i>description</i>, which is the text that
+     * goes right beneath the title and above all the commands.
+     * <p><br>
+     * <b>Default Value:</b> {@value}
+     */
+    private String commandListDescription = "This is a list of commands I recognize. " +
+            "For additional information on a command, type `%[command-name] help`.";
 
     private @NotNull ManagerConfig() {
     }
@@ -270,7 +295,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandsPerPage} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandsPerPage} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -290,7 +315,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandInfoColor} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandInfoColor} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -310,7 +335,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #errorColor} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #errorColor} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -330,7 +355,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandListColor} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandListColor} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -350,7 +375,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandListFooter} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandListFooter} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -359,7 +384,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandListFooterImg} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandListFooterImg} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -382,7 +407,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #allowDirectMessages} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #allowDirectMessages} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -402,7 +427,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #allowServerMessages} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #allowServerMessages} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -422,7 +447,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #temporaryErrors} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #temporaryErrors} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -442,7 +467,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #commandInfoTemporary} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #commandInfoTemporary} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -462,7 +487,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #prefixCaseSensitive} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #prefixCaseSensitive} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -482,7 +507,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #sendUnknownCommandError} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #sendUnknownCommandError} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -502,7 +527,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #implementJsonReplacements} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #implementJsonReplacements} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -522,7 +547,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current list of Json string replacements in {@link #jsonReplacements}.
+     * Retrieves the current list of Json string replacements in {@link #jsonReplacements}.
      * <i>(click for more info on the setting)</i>.
      *
      * @return the current setting list
@@ -565,7 +590,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current list of {@link #prefixes} <i>(click for more info on the setting)</i>.
+     * Retrieves the current list of {@link #prefixes} <i>(click for more info on the setting)</i>.
      *
      * @return the current prefixes list
      */
@@ -598,7 +623,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #requirePrefixInDM} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #requirePrefixInDM} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -618,7 +643,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #requirePrefixInServer} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #requirePrefixInServer} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -638,7 +663,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #prefixJsonReplacement} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #prefixJsonReplacement} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -658,7 +683,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current list of {@link #commandListPrompts} <i>(click for more info on the setting)</i>.
+     * Retrieves the current list of {@link #commandListPrompts} <i>(click for more info on the setting)</i>.
      *
      * @return the current prefixes list
      */
@@ -691,7 +716,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current {@link #leftArrowEmoji}. <i>(click for more info on the setting)</i>.
+     * Retrieves the current {@link #leftArrowEmoji}. <i>(click for more info on the setting)</i>.
      *
      * @return the current left arrow emoji
      */
@@ -700,7 +725,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current {@link #rightArrowEmoji}. <i>(click for more info on the setting)</i>.
+     * Retrieves the current {@link #rightArrowEmoji}. <i>(click for more info on the setting)</i>.
      *
      * @return the current right arrow emoji
      */
@@ -712,7 +737,7 @@ public class ManagerConfig implements Cloneable {
      * Sets new values for {@link #leftArrowEmoji} and {@link #rightArrowEmoji} to change the emojis the bot uses to
      * change pages in a command list.
      *
-     * @param left the new left arrow emoji
+     * @param left  the new left arrow emoji
      * @param right the new right arrow emoji
      * @return this {@link CommandManager} instance for chaining
      */
@@ -723,7 +748,7 @@ public class ManagerConfig implements Cloneable {
     }
 
     /**
-     * Returns the current state of {@link #allowBotEvents} <i>(click for more info on the setting)</i>.
+     * Retrieves the current state of {@link #allowBotEvents} <i>(click for more info on the setting)</i>.
      *
      * @return the current setting state
      */
@@ -739,6 +764,46 @@ public class ManagerConfig implements Cloneable {
      */
     public @NotNull ManagerConfig setAllowBotEvents(boolean state) {
         this.allowBotEvents = state;
+        return this;
+    }
+
+    /**
+     * Retrieves the current state of {@link #commandListTitle} <i>(click for more info on the setting)</i>.
+     *
+     * @return the current setting state
+     */
+    public @NotNull String getCommandListTitle() {
+        return commandListTitle;
+    }
+
+    /**
+     * Sets the new state for {@link #commandListTitle} <i>(click for more info on the setting)</i>.
+     *
+     * @param state the new state
+     * @return this {@link CommandManager} instance for chaining
+     */
+    public @NotNull ManagerConfig setCommandListTitle(@NotNull String state) {
+        this.commandListTitle = state;
+        return this;
+    }
+
+    /**
+     * Retrieves the current state of {@link #commandListDescription} <i>(click for more info on the setting)</i>.
+     *
+     * @return the current setting state
+     */
+    public @NotNull String getCommandListDescription() {
+        return commandListDescription;
+    }
+
+    /**
+     * Sets the new state for {@link #commandListDescription} <i>(click for more info on the setting)</i>.
+     *
+     * @param state the new state
+     * @return this {@link CommandManager} instance for chaining
+     */
+    public @NotNull ManagerConfig setCommandListDescription(@NotNull String state) {
+        this.commandListDescription = state;
         return this;
     }
 }

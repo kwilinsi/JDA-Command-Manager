@@ -221,13 +221,17 @@ public class CommandManager {
     }
 
     /**
-     * Returns the text that is placed in the title of the {@link Command} list for this {@link CommandManager}.
-     * It is based on the {@link #name} of the manager and is always in the form:
-     * <p>{@code "[name] Command List"}
+     * Returns the text that is placed in the title of the {@link Command} list for this {@link CommandManager}. It is
+     * based on the {@link #name} of the manager and the title setting from {@link ManagerConfig#getCommandListTitle()}.
+     * <p><br>
+     * The default title, assuming it wasn't changed by the user, will be the name of the manager followed by "Command
+     * List".
+     * <p><b>{@code [name] Command List}</b>
+     *
      * @return the title of the command list
      */
     public @NotNull String getCommandListTitle() {
-        return name + " Command List";
+        return name + " " + getConfig().getCommandListTitle();
     }
 
     /**
@@ -718,10 +722,7 @@ public class CommandManager {
             return MessageUtils.makeEmbedBuilder(
                     getCommandListTitle(),
                     "",
-                    "This is a list of commands I recognize." + (totalCommandListPages > 1 ?
-                            " Tap the arrows to switch pages and see more commands." : "") +
-                            " For additional information on a command type `" + getMainPrefix() +
-                            "[command-name] help`.",
+                    getConfig().getCommandListDescription(),
                     builtConfig.getCommandListColor(),
                     "Page " + curPage + " of " + totalCommandListPages + footer,
                     builtConfig.getCommandListFooterImg(),
