@@ -9,19 +9,20 @@ import com.google.gson.JsonObject;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EmbedField {
-    private final String title;
-    private final String content;
+    private final @NotNull String title;
+    private final @NotNull String content;
     private final boolean inline;
 
     private EmbedField(String title, String content) {
         this(title, content, false);
     }
 
-    private EmbedField(String title, String content, boolean inline) {
-        this.title = title;
-        this.content = content;
+    private EmbedField(@Nullable String title, @Nullable String content, boolean inline) {
+        this.title = title == null ? "" : title;
+        this.content = content == null ? "" : content;
         this.inline = inline;
     }
 
@@ -35,7 +36,7 @@ public class EmbedField {
      * @param title   the title of the field
      * @param content the content of the field
      */
-    public static EmbedField of(@NotNull String title, @NotNull String content) {
+    public static @NotNull EmbedField of(@Nullable String title, @Nullable String content) {
         return new EmbedField(title, content);
     }
 
@@ -51,7 +52,7 @@ public class EmbedField {
      * @param inline  true to allow multiple EmbedFields on the same line in an EmbedBuilder; false to force new lines
      * @return the newly created {@link EmbedField}
      */
-    public static EmbedField of(@NotNull String title, @NotNull String content, boolean inline) {
+    public static @NotNull EmbedField of(@Nullable String title, @Nullable String content, boolean inline) {
         return new EmbedField(title, content, inline);
     }
 
@@ -66,7 +67,7 @@ public class EmbedField {
      * @return the newly created {@link EmbedField}
      * @throws JsonParseException if there is an error reading the Json for the 'title', 'text', or 'inline' keys
      */
-    public static EmbedField of(@NotNull JsonObject json) throws JsonParseException {
+    public static @NotNull EmbedField of(@NotNull JsonObject json) throws JsonParseException {
         return new EmbedField(
                 JsonParser.getString(json, "title"),
                 JsonParser.getString(json, "text"),
@@ -95,7 +96,7 @@ public class EmbedField {
      *
      * @return the title
      */
-    public String getTitle() {
+    public @NotNull String getTitle() {
         return title;
     }
 
@@ -104,7 +105,7 @@ public class EmbedField {
      *
      * @return the content
      */
-    public String getContent() {
+    public @NotNull String getContent() {
         return content;
     }
 
