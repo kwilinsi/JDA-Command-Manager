@@ -131,7 +131,7 @@ public class CommandCallData {
         this.messageTextMod = messageText;
 
         // Keep removing the stuff at the start of the message text until all that's left is the messageArgs
-        while (!Checks.arrayStartsWith(messageTextMod.split("\\s+"), messageArgs) || messageTextMod.length() == 0)
+        while (!Checks.stringArrayStartsWith(messageTextMod.split("\\s+"), messageArgs) || messageTextMod.length() == 0)
             messageTextMod = messageTextMod.replaceAll("^\\s*[^\\s]+\\s+", "");
 
         return this;
