@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * This class takes the Command object a step further by adding support for custom arguments
@@ -34,16 +35,18 @@ public class Function extends Command {
     public Function(@NotNull JsonObject json, @NotNull CommandManager manager) throws JsonParseException {
         super(json, manager);
         this.arguments = Argument.ofArray(JsonParser.getJsonObjectArray(json, "arguments"));
-        this.methodName = JsonParser.getString(json, "method", getName());
+        this.methodName = JsonParser.getString(json, "method", getName()).toLowerCase(Locale.ROOT);
         syntaxes = Syntax.ofArray(JsonParser.getJsonArrayArray(json, "syntax"), this);
     }
 
     /**
-     * Retrieves the name of the method that should be executed when this {@link Function} is called in Discord.
+     * Retrieves the name of the method that should be executed when this {@link Function} is called in Discord. This is
+     * a replacement for the default {@link Command} behavior of simply returning the name, as in {@link #getName()}.
      *
      * @return the {@link #methodName}
      */
-    public String getMethodName() {
+    @Override
+    public @NotNull String getMethodName() {
         return methodName;
     }
 

@@ -147,7 +147,19 @@ public abstract class Command {
     }
 
     /**
+     * Returns the name of the {@link Method} to execute when this {@link Command} is triggered. By default, this is
+     * simply the {@link #name} of the command. But this method can be overridden, as in {@link
+     * Function#getMethodName()} to allow for method names that are different from the command name.
+     *
+     * @return the name of the method to run (all lowercase)
+     */
+    public @NotNull String getMethodName() {
+        return name.toLowerCase(Locale.ROOT);
+    }
+
+    /**
      * Retrieves the name of the command with the first letter capitalized and the rest of the letters lowercase.
+     *
      * @return the capitalized name of the command
      */
     public @NotNull String getNameCapital() {

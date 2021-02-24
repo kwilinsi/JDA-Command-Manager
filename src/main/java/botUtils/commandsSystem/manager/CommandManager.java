@@ -265,7 +265,7 @@ public class CommandManager {
      * @return the method with a matching name, or null if no matching method was found
      */
     public @Nullable Method getCommandCodeMethod(@NotNull Command command) {
-        return getCommandCodeMethod(command.getName().toLowerCase(Locale.ROOT));
+        return getCommandCodeMethod(command.getMethodName());
     }
 
     /**
